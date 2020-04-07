@@ -1,29 +1,14 @@
-import React from 'react';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import AddUpdateExpense from './AddUpdateExpense';
+import React,{useEffect} from "react";
+import { connect } from 'react-redux';
+import * as actions from "../store/actions/index";
 
+import { makeStyles ,TableBody,TableCell,Link,TableHead,TableRow,Table,Button} from '@material-ui/core';
+import {DeleteOutlineRounded} from '@material-ui/icons';
 // Generate Order Data
-function createData(id, category, itemName, amount, date) {
-  return { id, category, itemName, amount, date };
+function createData(id, category) {
+  return { id, category };
 }
 
-const rows = [
-  createData(0,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(2,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(3,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(4,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(5,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(6,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(7,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(8,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(9,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-];
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -34,34 +19,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CategoryList() {
+export  function CategoryList(props) {
   const [open, setOpen] = React.useState(false);
-
- 
   const handleClose = () => {
     setOpen(false);
   };
   const classes = useStyles();
+  console.log(props)
+  const { getCategory,category} = props;
+
+  useEffect(() => {
+    getCategory([]);
+  }, [getCategory]);
+
   return (
       <React.Fragment>
-        
-
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Category</TableCell>
-            <TableCell>Item Name</TableCell>
-            <TableCell>Amount</TableCell>
-            <TableCell>Expense Date</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {category.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>{row.itemName}</TableCell>
-              <TableCell>{row.amount}</TableCell>
-              <TableCell>{row.date}</TableCell>
+              <TableCell>{row.name}</TableCell>
+              <TableCell><Button onClick={()=>{console.log(row.id)}}><DeleteOutlineRounded/></Button></TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -71,7 +55,23 @@ export default function CategoryList() {
           See more expense
         </Link>
       </div>
-      <AddUpdateExpense open={open} handleClose={handleClose} />
     </React.Fragment>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    error: state.category.error,
+    category: state.category.category,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getCategory: (response) => dispatch(actions.getCategory(response))
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CategoryList);

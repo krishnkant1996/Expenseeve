@@ -92,6 +92,14 @@ export default function Expenses() {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const  data=[
       ['Amount', 'In INR'],
+      ['Remaining Amount', (110000-10000)],
+      ['Total Expense',10000],
+    ];
+    const  data1=[
+      ['Amount', 'In INR'],
+      ['Total Budget', 110000],
+      ['Total Budget', 110000],
+      ['Total Budget', 110000],
       ['Total Budget', 110000],
       ['Total Expense', 10000],
     ];
@@ -101,13 +109,13 @@ return (<>
 {/* Chart */}
 <Grid item xs={12} md={6} lg={6}>
   <Paper className={fixedHeightPaper}>
-    <Chart data={data} />
+    <Chart data={data} title={"Total Budget"} />
   </Paper>
 </Grid>
 {/* Recent Deposits */}
 <Grid item xs={12} md={6} lg={6}>
   <Paper className={fixedHeightPaper}>
-  <Chart data={data} />
+  <Chart data={data1}  title={"Catgory expense"}/>
   </Paper>
 </Grid>
 {/* Recent ExpenseList */}

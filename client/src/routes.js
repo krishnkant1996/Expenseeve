@@ -1,7 +1,7 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import {createBrowserHistory } from "history";
-import signIn from "./component/signIn";
+import signIn from "./component/SignIn";
 import Home from "./component/Home";
 export const history = createBrowserHistory();
 const logIn = localStorage.getItem('logIn');

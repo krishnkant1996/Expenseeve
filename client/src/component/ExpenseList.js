@@ -1,56 +1,52 @@
-import React from 'react';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import AddUpdateExpense from './AddUpdateExpense';
-import Button from '@material-ui/core/Button';
+import React, { useEffect } from "react";
+import { connect } from 'react-redux';
+import * as actions from "../store/actions/index";
 
-// Generate Order Data
-function createData(id, category, itemName, amount, date) {
-  return { id, category, itemName, amount, date };
-}
+import {
+  makeStyles,
+  TableBody,
+  TableCell,
+  Link,
+  TableHead,
+  TableRow,
+  Table,
+  Button,
+} from "@material-ui/core";
+import AddUpdateExpense from "./AddUpdateExpense";
+import { DeleteOutlineRounded, EditOutlined } from "@material-ui/icons";
 
-const rows = [
-  createData(0,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(2,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(3,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(4,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(5,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(6,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(7,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(8,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-  createData(9,  'Elvis Presley', 'Tupelo, MS',"82",'16 Mar, 2019',),
-];
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
   },
+  deleteIcon: {
+    marginLeft: theme.spacing(2),
+  }
 }));
 
-export default function ExpenseList() {
+export function ExpenseList(props) {
   const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [edit, setEdit] = React.useState(false);
+  const [expenseData, setExpenseData] = React.useState([]);
+  console.log(props)
   const classes = useStyles();
-  return (
-      <React.Fragment>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-          Add expense
-        </Button>  
+  const { getExpenses, expenses } = props;
 
+  useEffect(() => {
+    getExpenses();
+  }, [getExpenses]);
+
+
+  return (
+    <React.Fragment>
+      <Button variant="outlined" color="primary" onClick={() => {
+        setEdit(true);
+        setOpen(true);
+        setExpenseData("");
+      }}>
+        Add expense
+      </Button>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -58,25 +54,62 @@ export default function ExpenseList() {
             <TableCell>Item Name</TableCell>
             <TableCell>Amount</TableCell>
             <TableCell>Expense Date</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {expenses.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>{row.itemName}</TableCell>
+              <TableCell>{row.categoryId}</TableCell>
+              <TableCell>{row.name}</TableCell>
               <TableCell>{row.amount}</TableCell>
               <TableCell>{row.date}</TableCell>
+              <TableCell>
+                <Button
+                  onClick={() => {
+                    setOpen(true);
+                    setEdit(true);
+                    setExpenseData(row)
+                  }}
+                  variant="outlined" color="primary"
+                >
+                  <EditOutlined />
+                </Button>
+                <Button
+                  onClick={() => {
+                    console.log(row.id);
+                  }}
+                  variant="outlined" color="secondary"
+                  className={classes.deleteIcon}
+                >
+                  <DeleteOutlineRounded />
+                </Button>
+
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more expense
-        </Link>
-      </div>
-      <AddUpdateExpense open={open} handleClose={handleClose} />
+     
+      <AddUpdateExpense open={open} handleClose={() => { setOpen(false) }} edit={edit} data={expenseData} />
     </React.Fragment>
   );
 }
+const mapStateToProps = state => {
+  return {
+    error: state.expense.error,
+    expenses: state.expense.expenses,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setExpenses: (response) =>
+      dispatch(actions.setExpenses(response)),
+    getExpenses: () => dispatch(actions.getExpenses())
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ExpenseList);

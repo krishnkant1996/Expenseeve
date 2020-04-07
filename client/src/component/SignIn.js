@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from "../store/actions/index";
+import { updateObject, checkValidity } from '../shared/utility';
+
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
@@ -9,11 +13,7 @@ import Container from '@material-ui/core/Container';
 import { GoogleLogin } from 'react-google-login';
 import {Copyright} from './Copyright';
 
-const responseGoogle = (response) => {
-  console.log(response  );
-  localStorage.setItem("logIn",true)
-  window.location.reload(false); 
-}
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -28,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
  
 }));
 
-export default function SignIn() {
+export  function SignIn(props) {
   const classes = useStyles();
-
+  const responseGoogle = (response) => {
+    props.onAuth(response)
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -57,3 +59,25 @@ export default function SignIn() {
     </Container>
   );
 }
+const mapStateToProps = state => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+    isAuthenticated: state.auth.token !== null,
+    authRedirectPath: state.auth.authRedirectPath,
+    userId:state.auth.userId
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (response) =>
+      dispatch(actions.auth(response)),
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignIn);

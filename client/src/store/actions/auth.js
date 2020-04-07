@@ -40,30 +40,26 @@ export const checkAuthTimeout = (expirationTime) => {
     };
 };
 
-export const auth = (email, password, isSignup) => {
+export const auth = (response) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
-            email: email,
-            password: password,
-            returnSecureToken: true
+            response
         };
-        let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDbMS8I4RjzhXU5pDBanXiwKliwF2aQpV4';
-        if (!isSignup) {
-            url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDbMS8I4RjzhXU5pDBanXiwKliwF2aQpV4';
-        }
-        axios.post(url, authData)
-            .then(response => {
-                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-                localStorage.setItem('token', response.data.idToken);
-                localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('userId', response.data.localId);
-                dispatch(authSuccess(response.data.idToken, response.data.localId));
-                dispatch(checkAuthTimeout(response.data.expiresIn));
-            })
-            .catch(err => {
-                dispatch(authFail(err.response.data.error));
-            });
+        console.log(response)
+        // let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDbMS8I4RjzhXU5pDBanXiwKliwF2aQpV4';
+        // axios.post(url, authData)
+        //     .then(response => {
+             //   const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+                localStorage.setItem('token', response.tokenId);
+              //  localStorage.setItem('expirationDate', expirationDate);
+                localStorage.setItem('userId', response.googleId);
+                dispatch(authSuccess(response.tokenId, response.googleId));
+               // dispatch(checkAuthTimeout(response.data.expiresIn));
+            // })
+            // .catch(err => {
+            //     dispatch(authFail(err.response.data.error));
+            // });
     };
 };
 

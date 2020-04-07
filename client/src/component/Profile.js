@@ -1,22 +1,24 @@
-
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-
-
+import { Card ,Grid,Paper,makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  listItem: {
-    padding: theme.spacing(1, 0),
+  root: {
+    flexGrow: 1,
   },
-  total: {
-    fontWeight: 700,
+  paperTitle: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.primary,
   },
-  title: {
-    marginTop: theme.spacing(2),
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  Cardroot: {
+    minWidth: 275,
+    padding:theme.spacing(5)
+
   },
 }));
 
@@ -24,27 +26,25 @@ export default function Profile() {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        User Details
-      </Typography>
-      <List disablePadding>
+    <div className={classes.root}>
+      <Card className={classes.Cardroot}>
+      <Grid container spacing={3}>
         
-          <ListItem className={classes.listItem} >
-            <ListItemText primary={"First Name"}  />
-            <Typography variant="body2">{"Krishnkant "}</Typography>
-          </ListItem>
-          <ListItem className={classes.listItem} >
-            <ListItemText primary={"Last Name"}  />
-            <Typography variant="body2">{"Tiwari "}</Typography>
-          </ListItem>
-          <ListItem className={classes.listItem} >
-            <ListItemText primary={"Mobile"}  />
-            <Typography variant="body2">{"564856895561 "}</Typography>
-          </ListItem>
-         
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.paperTitle}>Full Name :- </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.paper}>xs=12 sm=6</Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.paperTitle}>Email :- </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.paper}>xs=12 sm=6</Paper>
+        </Grid>
        
-      </List>
-    </React.Fragment>
+      </Grid>
+      </Card>
+    </div>
   );
 }

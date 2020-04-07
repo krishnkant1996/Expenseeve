@@ -6,7 +6,6 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-
 export default function MaterialUIPickers(props) {
   // The first commit of Material-UI
   return (

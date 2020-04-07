@@ -8,7 +8,7 @@ const ExampleChart = (props) => {
     loader={<div>Loading Chart</div>}
     data={props.data}
     options={{
-      title: 'My Daily Activities',
+      title: props.title,
       // Just add this option
       pieHole: 0.4,
     }}

@@ -14,3 +14,11 @@ export {
     setAuthRedirectPath,
     authCheckState
 } from './auth';
+export {
+    getExpenses,
+    setExpenses
+} from './expense';
+export {
+    getCategory,
+    addCategory
+} from './category';
