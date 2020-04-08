@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { connect } from 'react-redux';
+import * as actions from "../store/actions/index";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -87,35 +89,55 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function Expenses() {
+export  function Expenses(props) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    const  data=[
-      ['Amount', 'In INR'],
-      ['Remaining Amount', (110000-10000)],
-      ['Total Expense',10000],
-    ];
-    const  data1=[
-      ['Amount', 'In INR'],
-      ['Total Budget', 110000],
-      ['Total Budget', 110000],
-      ['Total Budget', 110000],
-      ['Total Budget', 110000],
-      ['Total Expense', 10000],
-    ];
+    const [categoryData, setCategoryData] = React.useState([]);
+    const [budgetData, setBudgetData] = React.useState([['Amount', 'In INR']]);    
+    const {  expenses,budget,getBudget } = props;
+    useEffect(()=>{
+      if(budget.length===0){
+        getBudget()
+      }
+      },[budget,getBudget])
+    useEffect(() => {
+      console.log(expenses)
+      let  exp = {};
+      let cat;
+      cat = expenses.forEach((d, i) => {
+        let category = d['categoryName'];
+        exp[category] = exp.hasOwnProperty(category) ?
+          exp[category] + d['amount'] :
+          d['amount']
+      });
+      console.log("exp",exp)
+      console.log("Object.keys.exp",Object.keys(exp))
+      let totalExense=0 ;
+      let newObj=[['Amount', 'In INR']]
+      for (let i=0; i<Object.keys(exp).length; i++) { 
+        totalExense = totalExense+exp[Object.keys(exp)[i]];
+        newObj.push([Object.keys(exp)[i],exp[Object.keys(exp)[i]]]) ;
+      }
+      console.log("budget",budget)
+
+      let budgetValue = [['Amount', 'In INR'],["Remaining amount",(budget.amount-totalExense)],["Total Expenses",totalExense]];
+      setCategoryData(newObj)
+      setBudgetData(budgetValue)
+    }, [expenses,budget]);
+  
 return (<>
 
 <Grid container spacing={3}>
 {/* Chart */}
 <Grid item xs={12} md={6} lg={6}>
   <Paper className={fixedHeightPaper}>
-    <Chart data={data} title={"Total Budget"} />
+    <Chart data={budgetData} title={"Total Budget"} />
   </Paper>
 </Grid>
 {/* Recent Deposits */}
 <Grid item xs={12} md={6} lg={6}>
   <Paper className={fixedHeightPaper}>
-  <Chart data={data1}  title={"Catgory expense"}/>
+  <Chart data={categoryData}  title={"Catgory expense"}/>
   </Paper>
 </Grid>
 {/* Recent ExpenseList */}
@@ -127,3 +149,23 @@ return (<>
 </Grid>
 </>);
 }
+const mapStateToProps = state => {
+  return {
+    error: state.expense.error,
+    expenses: state.expense.expenses,
+    budget: state.budget.budget,
+
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getExpenses: () => dispatch(actions.getExpenses()),
+    getBudget: () => dispatch(actions.getBudget()),
+
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Expenses);

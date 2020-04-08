@@ -23,15 +23,17 @@ const useStyles = makeStyles((theme) => ({
 
 export  function Setting(props) {
   const [categoryName, setCategoryName] = React.useState("");
-  const { addCategory,error } = props;
+  const [budgetValue, setBudget] = React.useState(0);
+  const { addCategory,getBudget,addBudget } = props;
   const classes = useStyles();
   useEffect(()=>{
-    console.log(error)
-  if(!error){
-    setCategoryName("")
+  if(props.budget.length===0){
+    getBudget()
   }
-
-  },[error])
+  if(props.budget!==budgetValue){
+    setBudget(props.budget.amount)
+  }
+  },[props,getBudget])
   return (
 
     <>
@@ -49,10 +51,12 @@ export  function Setting(props) {
                 label="Amount"
                 multiline
                 rowsMax="4"
+                value={budgetValue}
+                onChange={(e)=>{setBudget(e.target.value)}}
               />              
               </Grid>
               <Grid item xs={4} md={4} lg={4}>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={()=>{addBudget(props.budget._id,budgetValue)}}>
                   Update
                 </Button>
               </Grid>
@@ -75,9 +79,8 @@ export  function Setting(props) {
               <Grid item xs={4} md={4} lg={4}>
                 <Button variant="contained" color="primary" onClick={()=>{
                   addCategory(categoryName);
-                  setTimeout(()=>{
                     setCategoryName("")
-                  },1000)
+                
                 }}>
                   Add
                 </Button>
@@ -97,14 +100,17 @@ export  function Setting(props) {
 }
 const mapStateToProps = state => {
   return {
-    error: state.category.error,
+    error: state.budget.error,
+    budget: state.budget.budget,
     category: state.category.category,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addCategory: (name) => dispatch(actions.addCategory(name))
+    addCategory: (name) => dispatch(actions.addCategory(name)),
+    getBudget: () => dispatch(actions.getBudget()),
+    addBudget: (id,amount) => dispatch(actions.addBudget(id,amount))
   };
 };
 export default connect(

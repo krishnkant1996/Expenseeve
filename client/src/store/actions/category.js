@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from "axios";
+import {apiUrl} from "../../config"
 
 
 export const setCategory = ( category ) => {
@@ -17,7 +18,7 @@ export const fetchCategoryFailed = () => {
 
 export const getCategory = () => {
     return dispatch => {
-        axios.get('http://localhost:3000/all-categories')
+        axios.get(apiUrl+'/all-categories')
         .then( response => {
             console.log(response)
             dispatch(setCategory(response.data));
@@ -31,7 +32,19 @@ export const getCategory = () => {
 };
 export const addCategory = (name) => {
     return dispatch => {
-        axios.post(' http://localhost:3000/category',{name} )
+        axios.post(apiUrl+'/category',{name} )
+        .then( response => {
+           dispatch(getCategory());
+        } )
+        .catch( error => {
+            dispatch(fetchCategoryFailed());
+        } );
+    }
+};
+export const deleteCategory = (id) => {
+    console.log(id)
+    return dispatch => {
+        axios.post(apiUrl+'/category-delete',{id} )
         .then( response => {
            dispatch(getCategory());
         } )

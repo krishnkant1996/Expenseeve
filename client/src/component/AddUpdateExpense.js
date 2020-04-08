@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function AddUpdateExpense(props) {
+  console.log(props)
+  const [id, setID] = React.useState('');
   const [name, setName] = React.useState('');
   const [amount, setAmount] = React.useState('');
   const [categoryName, setCategory] = React.useState('');
@@ -40,6 +42,7 @@ export function AddUpdateExpense(props) {
       props.getCategory()
     }
     if (props.edit) {
+      setID(props.data._id);
       setName(props.data.name);
       setAmount(props.data.amount)
       setCategory(props.data.categoryName)
@@ -93,7 +96,7 @@ export function AddUpdateExpense(props) {
           </Button>
           <Button variant="outlined" onClick={()=>{
             console.log(selectedDate)
-            addExpense(name,
+            addExpense(id,name,
               amount,
               categoryName,
               selectedDate);
@@ -118,10 +121,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getCategory: (response) => dispatch(actions.getCategory(response)),
-    addExpense: (name,
+    addExpense: (id,name,
       amount,
       categoryName,
-      date) => dispatch(actions.addExpense(name,
+      date) => dispatch(actions.addExpense(id,name,
         amount,
         categoryName,
         date))

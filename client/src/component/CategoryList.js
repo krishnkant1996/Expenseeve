@@ -5,7 +5,7 @@ import * as actions from "../store/actions/index";
 import { TableBody,TableCell,TableHead,TableRow,Table,Button} from '@material-ui/core';
 import {DeleteOutlineRounded} from '@material-ui/icons';
 export  function CategoryList(props) {
-  const { getCategory,category} = props;
+  const { getCategory,category,deleteCategory} = props;
 
   useEffect(() => {
     getCategory([]);
@@ -24,7 +24,7 @@ export  function CategoryList(props) {
           {category.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.name}</TableCell>
-              <TableCell><Button onClick={()=>{console.log(row.id)}}><DeleteOutlineRounded/></Button></TableCell>
+              <TableCell><Button onClick={()=>{deleteCategory(row._id)}}><DeleteOutlineRounded/></Button></TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -43,7 +43,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getCategory: (response) => dispatch(actions.getCategory(response))
+    getCategory: (response) => dispatch(actions.getCategory(response)),
+    deleteCategory: (id) => dispatch(actions.deleteCategory(id))
   };
 };
 export default connect(

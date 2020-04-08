@@ -6,9 +6,15 @@ export {
 } from './auth';
 export {
     getExpenses,
-    addExpense
+    addExpense,
+    deleteExpense
 } from './expense';
 export {
     getCategory,
-    addCategory
+    addCategory,
+    deleteCategory
 } from './category';
+export {
+    getBudget,
+    addBudget,
+} from './budget';

@@ -30,7 +30,7 @@ export function ExpenseList(props) {
   const [expenseData, setExpenseData] = React.useState([]);
   console.log(props)
   const classes = useStyles();
-  const { getExpenses, expenses } = props;
+  const { getExpenses, expenses,deleteExpense } = props;
 
   useEffect(() => {
     getExpenses();
@@ -76,7 +76,7 @@ export function ExpenseList(props) {
                 </Button>
                 <Button
                   onClick={() => {
-                    console.log(row.id);
+                    deleteExpense(row._id)
                   }}
                   variant="outlined" color="secondary"
                   className={classes.deleteIcon}
@@ -103,7 +103,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getExpenses: () => dispatch(actions.getExpenses())
+    getExpenses: () => dispatch(actions.getExpenses()),
+    deleteExpense:(id)=>dispatch(actions.deleteExpense(id)),
   };
 };
 export default connect(

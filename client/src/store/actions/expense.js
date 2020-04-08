@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from "axios";
+import {apiUrl} from "../../config"
 
 
 export const setExpenses = ( expenses ) => {
@@ -17,7 +18,7 @@ export const fetchExpensesFailed = () => {
 
 export const getExpenses = () => {
     return dispatch => {
-        axios.get('http://localhost:3000/all-expenses')
+        axios.get(apiUrl+'/all-expenses')
         .then( response => {
             console.log(response)
             dispatch(setExpenses(response.data));
@@ -30,12 +31,25 @@ export const getExpenses = () => {
 
             
 };
-export const addExpense = (name,
+export const addExpense = (id,
+    name,
     amount,
     categoryName,
     date) => {
     return dispatch => {
-        axios.post(' http://localhost:3000/expense',{name,amount,categoryName,date} )
+        axios.post(apiUrl+'/expense',{id,name,amount,categoryName,date} )
+        .then( response => {
+           dispatch(getExpenses());
+        } )
+        .catch( error => {
+            dispatch(fetchExpensesFailed());
+        } );
+    }
+};
+export const deleteExpense = (id) => {
+    console.log(id)
+    return dispatch => {
+        axios.post(apiUrl+'/expense-delete',{id} )
         .then( response => {
            dispatch(getExpenses());
         } )

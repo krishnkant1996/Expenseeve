@@ -8,13 +8,15 @@ import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth';
 import expenseReducer from './store/reducers/expense';
 import categoryReducer from './store/reducers/category';
+import budgetReducer from './store/reducers/budget';
 
 import * as serviceWorker from './serviceWorker';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   expense:expenseReducer,
-  category:categoryReducer  
+  category:categoryReducer,
+  budget:  budgetReducer
 });
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
