@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from "../store/actions/index";
-import { updateObject, checkValidity } from '../shared/utility';
-
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';

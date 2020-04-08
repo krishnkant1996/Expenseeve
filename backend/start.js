@@ -33,7 +33,7 @@ app.listen(port, () => console.log(`Congratulations, app listening at http://loc
 
 app.post('/expense', (req, res) => {
     const { body } = req;
-    const { categoryName, name, amount } = body;
+    const { categoryName, name, amount,date } = body;
     console.log(35, body)
     if (!categoryName || !name || !amount) {
         return res.status(400).send('Incorrect payload send kar-ditta tussi paaji');
@@ -45,6 +45,8 @@ app.post('/expense', (req, res) => {
             name,
             amount,
             categoryId: catData._id,
+            categoryName,
+            date
         }
         console.log(46, catData, obj)
         expense.saveExpense(obj, (err, data) => {

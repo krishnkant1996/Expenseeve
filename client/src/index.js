@@ -6,16 +6,12 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth';
-import burgerBuilderReducer from './store/reducers/burgerBuilder';
-import orderReducer from './store/reducers/order';
 import expenseReducer from './store/reducers/expense';
 import categoryReducer from './store/reducers/category';
 
 import * as serviceWorker from './serviceWorker';
 
 const rootReducer = combineReducers({
-  burgerBuilder: burgerBuilderReducer,
-  order: orderReducer,
   auth: authReducer,
   expense:expenseReducer,
   category:categoryReducer  

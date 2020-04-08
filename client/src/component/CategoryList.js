@@ -2,30 +2,9 @@ import React,{useEffect} from "react";
 import { connect } from 'react-redux';
 import * as actions from "../store/actions/index";
 
-import { makeStyles ,TableBody,TableCell,Link,TableHead,TableRow,Table,Button} from '@material-ui/core';
+import { TableBody,TableCell,TableHead,TableRow,Table,Button} from '@material-ui/core';
 import {DeleteOutlineRounded} from '@material-ui/icons';
-// Generate Order Data
-function createData(id, category) {
-  return { id, category };
-}
-
-function preventDefault(event) {
-  event.preventDefault();
-}
-
-const useStyles = makeStyles((theme) => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
-  },
-}));
-
 export  function CategoryList(props) {
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const classes = useStyles();
-  console.log(props)
   const { getCategory,category} = props;
 
   useEffect(() => {
@@ -50,11 +29,7 @@ export  function CategoryList(props) {
           ))}
         </TableBody>
       </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more expense
-        </Link>
-      </div>
+     
     </React.Fragment>
   );
 }

@@ -30,8 +30,17 @@ export const getExpenses = () => {
 
             
 };
-export const addExpense = (data) => {
+export const addExpense = (name,
+    amount,
+    categoryName,
+    date) => {
     return dispatch => {
-        dispatch(setExpenses(data));
+        axios.post(' http://localhost:3000/expense',{name,amount,categoryName,date} )
+        .then( response => {
+           dispatch(getExpenses());
+        } )
+        .catch( error => {
+            dispatch(fetchExpensesFailed());
+        } );
     }
 };

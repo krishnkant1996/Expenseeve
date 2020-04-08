@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
@@ -32,22 +31,23 @@ const useStyles = makeStyles((theme) => ({
 export function AddUpdateExpense(props) {
   const [name, setName] = React.useState('');
   const [amount, setAmount] = React.useState('');
-  const [selectedCategory, setCategory] = React.useState('');
+  const [categoryName, setCategory] = React.useState('');
   const classes = useStyles();
-  const { category, getCategory } = props;
+  const { category,addExpense } = props;
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   useEffect(() => {
-    if(props.category.length==0){
+    if(props.category.length===0){
       props.getCategory()
     }
     if (props.edit) {
-      setName(props.data.itemName);
+      setName(props.data.name);
       setAmount(props.data.amount)
-      setCategory(props.data.category)
+      setCategory(props.data.categoryName)
       setSelectedDate(props.data.date)
     }
   }, [props])
 
+  console.log(selectedDate)
 
   return (
     <>
@@ -65,13 +65,13 @@ export function AddUpdateExpense(props) {
               <Select
                 labelId="demo-simple-select-outlined-label"
                 id="select-category"
-                value={selectedCategory}
+                value={categoryName}
                 onChange={(e) => { setCategory(e.target.value) }}
                 label="Age"
               >
                 {category.map((row) =>
                   (
-                    <MenuItem key={row.id} value={row.name}>{row.name}
+                    <MenuItem key={row._id} value={row.name}>{row.name}
                     </MenuItem>
                   ))}
               </Select>
@@ -91,7 +91,14 @@ export function AddUpdateExpense(props) {
           <Button variant="outlined" onClick={props.handleClose} >
             Cancel
           </Button>
-          <Button variant="outlined" onClick={props.handleClose} color="primary">
+          <Button variant="outlined" onClick={()=>{
+            console.log(selectedDate)
+            addExpense(name,
+              amount,
+              categoryName,
+              selectedDate);
+            props.handleClose();
+            }} color="primary">
             Submit
           </Button>
         </DialogActions>
@@ -110,8 +117,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setExpenses: (response) => dispatch(actions.setExpenses(response)),
-    getCategory: (response) => dispatch(actions.getCategory(response))
+    getCategory: (response) => dispatch(actions.getCategory(response)),
+    addExpense: (name,
+      amount,
+      categoryName,
+      date) => dispatch(actions.addExpense(name,
+        amount,
+        categoryName,
+        date))
   };
 };
 export default connect(

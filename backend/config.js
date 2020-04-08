@@ -1,18 +1,17 @@
 const env = require('./env');
-
+require('dotenv').config();
 let dbUrl, port;
-
 if (env.type === 'test') {
-    dbUrl = 'mongodb+srv://root:root@cluster0-qupud.mongodb.net/test';
+    dbUrl = process.env.dbUrl;
     port = 3001;
 } else if (env.type === 'prod') {
-    dbUrl = 'mongodb+srv://root:root@cluster0-qupud.mongodb.net/test';
+    dbUrl = process.env.dbUrl;
     port = 3002;
 } else if (env.type === 'dev') {
-    dbUrl = 'mongodb+srv://root:root@cluster0-qupud.mongodb.net/test';
+    dbUrl = process.env.dbUrl;
     port = 3000;
 } else {
-    dbUrl = 'mongodb+srv://root:root@cluster0-qupud.mongodb.net/test';
+    dbUrl = process.env.dbUrl;
     port = 3000;
 }
 

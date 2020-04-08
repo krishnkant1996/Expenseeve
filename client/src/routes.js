@@ -4,8 +4,6 @@ import {createBrowserHistory } from "history";
 import signIn from "./component/SignIn";
 import Home from "./component/Home";
 export const history = createBrowserHistory();
-const logIn = localStorage.getItem('logIn');
-console.log(logIn);
 
 // Instead of BrowserRouter, we use the regular router,
 // but we pass in a customer history to it.
@@ -13,12 +11,10 @@ const AppRouter = () => (
   <Router history={history}>
     <div>
       <Switch>
-        {logIn?
-              <Route path="/" component={Home} />
-            :
-              <Route path="/" component={signIn} />
+        <Route exact path="/signIn" component={signIn} />
 
-        }
+              <Route path="/" component={Home} />
+        
       </Switch>
     </div>
   </Router>

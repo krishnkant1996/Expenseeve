@@ -6,7 +6,6 @@ import {
   makeStyles,
   TableBody,
   TableCell,
-  Link,
   TableHead,
   TableRow,
   Table,
@@ -41,7 +40,7 @@ export function ExpenseList(props) {
   return (
     <React.Fragment>
       <Button variant="outlined" color="primary" onClick={() => {
-        setEdit(true);
+        setEdit(false);
         setOpen(true);
         setExpenseData("");
       }}>
@@ -60,7 +59,7 @@ export function ExpenseList(props) {
         <TableBody>
           {expenses.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.categoryId}</TableCell>
+              <TableCell>{row.categoryName}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.amount}</TableCell>
               <TableCell>{row.date}</TableCell>
@@ -104,8 +103,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setExpenses: (response) =>
-      dispatch(actions.setExpenses(response)),
     getExpenses: () => dispatch(actions.getExpenses())
   };
 };

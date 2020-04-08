@@ -1,4 +1,3 @@
-import axios from 'axios';
 
 import * as actionTypes from './actionTypes';
 
@@ -43,23 +42,11 @@ export const checkAuthTimeout = (expirationTime) => {
 export const auth = (response) => {
     return dispatch => {
         dispatch(authStart());
-        const authData = {
-            response
-        };
-        console.log(response)
-        // let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDbMS8I4RjzhXU5pDBanXiwKliwF2aQpV4';
-        // axios.post(url, authData)
-        //     .then(response => {
-             //   const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-                localStorage.setItem('token', response.tokenId);
-              //  localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('userId', response.googleId);
-                dispatch(authSuccess(response.tokenId, response.googleId));
-               // dispatch(checkAuthTimeout(response.data.expiresIn));
-            // })
-            // .catch(err => {
-            //     dispatch(authFail(err.response.data.error));
-            // });
+       
+        localStorage.setItem('token', response.tokenId);
+        localStorage.setItem('userId', response.googleId);
+        dispatch(authSuccess(response.tokenId, response.googleId));
+             
     };
 };
 

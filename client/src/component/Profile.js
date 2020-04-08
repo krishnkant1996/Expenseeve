@@ -34,13 +34,13 @@ export default function Profile() {
           <Paper className={classes.paperTitle}>Full Name :- </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}>xs=12 sm=6</Paper>
+          <Paper className={classes.paper}>Krishnkant Tiwari</Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperTitle}>Email :- </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}>xs=12 sm=6</Paper>
+          <Paper className={classes.paper}>Krishnkant120@gmail.com</Paper>
         </Grid>
        
       </Grid>
