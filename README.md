@@ -1,8 +1,8 @@
 # Expenseeve
 
-DEMO  LINK 
+Demo Link.<br />
+Open [https://krishnkant1996.github.io/react_client/](https://krishnkant1996.github.io/react_client/) to view it in the browser.
 
-    https://krishnkant1996.github.io/react_client/
 
 Backend 
 step to run :-
