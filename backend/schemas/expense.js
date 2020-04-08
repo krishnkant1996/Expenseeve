@@ -6,6 +6,7 @@ const expenseSchema = new mongoose.Schema({
     categoryId: String,
     categoryName: String,
     date: Date,
+    status:{type:Number,default:1}
 });
 const Expense = mongoose.model('ExpenseSchema', expenseSchema);
 
@@ -23,13 +24,16 @@ const getExpense = (obj, cb) => {
 }
 
 const updateExpense = (obj, cb) => {
-    const saveObj = new Expense(obj);
-    saveObj.save(cb);
+    const {id} = obj;
+    Expense.updateOne({_id:id},obj).then((res)=>{
+        cb(null, res)
+    });
 }
 
-const deleteExpense = (obj, cb) => {
-    const saveObj = new Expense(obj);
-    saveObj.save(cb);
+const deleteExpense = (id, cb) => {
+    Expense.updateOne({_id:id},{status :"0"}).then((res)=>{
+        cb(null, res)
+    });
 }
 
 const findOneExpense = (obj, cb) => {
@@ -37,7 +41,10 @@ const findOneExpense = (obj, cb) => {
 }
 
 const findAllExpense = (cb) => {
-    return Expense.find(cb);
+    return Expense.find({ status:1 }).
+        then(res => {   
+            cb(null,res)           
+        })
 }
 
 module.exports = {saveExpense, getExpense, updateExpense, deleteExpense, findOneExpense, findAllExpense};

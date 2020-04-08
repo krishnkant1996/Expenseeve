@@ -8,19 +8,8 @@ const bodyParser = require("body-parser");
 const app = require('express')();
 const expense = require('./schemas/expense');
 const category = require('./schemas/category');
+const budget = require('./schemas/budget');
 app.use(cors());
-
-// examples of crufd
-// budget.saveBudget({
-//   amount: 137,
-// }, (err, res) => {console.log(31, err, res)});
-// budget.findOneBudget({
-//   amount: 137,
-// }, (err, res) => {console.log(31, err, res)});
-// const expense = require('./schemas/expense');
-// expense.saveExpense({
-//   name: 'dcsdc',
-// }, (err, res) => {console.log(31, err, res)});
 
 
 const port = config.port;
@@ -33,7 +22,8 @@ app.listen(port, () => console.log(`Congratulations, app listening at http://loc
 
 app.post('/expense', (req, res) => {
     const { body } = req;
-    const { categoryName, name, amount,date } = body;
+    const { categoryName, name, amount,date,id } = body;
+
     console.log(35, body)
     if (!categoryName || !name || !amount) {
         return res.status(400).send('Incorrect payload send kar-ditta tussi paaji');
@@ -46,19 +36,46 @@ app.post('/expense', (req, res) => {
             amount,
             categoryId: catData._id,
             categoryName,
-            date
+            date,
+            id
         }
         console.log(46, catData, obj)
-        expense.saveExpense(obj, (err, data) => {
-            if (err) return res.status(400).send(err);
-            return res.status(200).send(data);
-        });
+        if(id){
+            console.log(49, obj)
+
+            expense.updateExpense(obj, (err, data) => {
+                if (err) return res.status(400).send(err);
+                return res.status(200).send(data);
+            }); 
+        }else{
+            console.log(400, obj)
+
+            expense.saveExpense(obj, (err, data) => {
+                if (err) return res.status(400).send(err);
+                return res.status(200).send(data);
+            });
+        }
+       
     })
 });
+
+app.post('/expense-delete', (req, res) => {
+    const { body } = req;
+    const { id } = body;
+    if (!id ) {
+        return res.status(400).send('Incorrect payload send kar-ditta tussi paaji');
+    }
+    expense.deleteExpense(id, (err, data) => {
+        if (err) return res.status(400).send(err);
+        return res.status(200).send(data);
+    })
+});
+
 
 app.get('/all-expenses', (req, res) => {
     expense.findAllExpense((err, data) => {
         if (err) return res.status(400).send(err);
+        console.log(data)
         return res.status(200).send(data);
     })
 })
@@ -73,9 +90,44 @@ app.post('/category', (req, res) => {
 
     })
 })
+app.post('/category-delete', (req, res) => {
+    const { body } = req;
+    const { id } = body;
+    if (!id ) {
+        return res.status(400).send('Incorrect payload send kar-ditta tussi paaji');
+    }
+    category.deleteCategory(id, (err, data) => {
+        if (err) return res.status(400).send(err);
+        return res.status(200).send(data);
+    })
+});
 
 app.get('/all-categories', (req, res) => {
     category.findAllCategory((err, data) => {
+        if (err) return res.status(400).send(err);
+        return res.status(200).send(data);
+    })
+})
+
+app.post('/budget', (req, res) => {
+    const { body } = req;
+    if(body.id){
+        budget.updateBudget(body, (err, data) => {
+            if (err) return res.status(400).send(err);
+            return res.status(200).send(data);
+    
+        })
+    }else{
+        budget.saveBudget(body, (err, data) => {
+            if (err) return res.status(400).send(err);
+            return res.status(200).send(data);
+    
+        })
+    }
+    
+})
+app.get('/get-budget', (req, res) => {
+    budget.findOneBudget((err, data) => {
         if (err) return res.status(400).send(err);
         return res.status(200).send(data);
     })

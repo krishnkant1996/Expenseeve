@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
     name: String,
+    status:{type:Number,default:1}
 });
 const Category = mongoose.model('CategorySchema', categorySchema);
 
@@ -9,23 +10,15 @@ const Category = mongoose.model('CategorySchema', categorySchema);
 
 const saveCategory = (obj, cb) => {
     const saveObj = new Category(obj);
-    console.log(12, obj, saveObj, cb)
     saveObj.save(cb);
 }
 
-const getCategory = (obj, cb) => {
-    const saveObj = new Category(obj);
-    saveObj.save(cb);
-}
 
-const updateCategory = (obj, cb) => {
-    const saveObj = new Category(obj);
-    saveObj.save(cb);
-}
 
-const deleteCategory = (obj, cb) => {
-    const saveObj = new Category(obj);
-    saveObj.save(cb);
+const deleteCategory = (id, cb) => {
+    Category.updateOne({_id:id},{status :"0"}).then((res)=>{
+        cb(null, res)
+    });
 }
 
 const findOneCategory = (obj, cb) => {
@@ -33,7 +26,10 @@ const findOneCategory = (obj, cb) => {
 }
 
 const findAllCategory = (cb) => {
-    return Category.find(cb);
+    return Category.find({ status:1 }).
+    then(res => {   
+        cb(null,res)           
+    })
 }
 
-module.exports = {saveCategory, getCategory, updateCategory, deleteCategory, findOneCategory, findAllCategory};
+module.exports = {saveCategory, deleteCategory, findOneCategory, findAllCategory};
