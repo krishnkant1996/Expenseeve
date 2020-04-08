@@ -1,4 +1,4 @@
-# -Expenseeve
+# Expenseeve
 
 Backend 
 step to run :-
