@@ -20,13 +20,13 @@ IN client side :
 
 home page url 
 
-    http://localhost:5000
+    http://localhost:5000/react_client
 Setting page url
 
-    http://localhost:5000/setting
+    http://localhost:5000/react_client/setting
 Profile page url
 
-    http://localhost:5000/profile
+    http://localhost:5000/react_client/profile
 
 signIn page url
 
