@@ -1,7 +1,6 @@
 const env = require('./env');
 const config = require('./config');
 require('./init_db');
-require('./routes/expense');
 var cors = require('cors');
 
 const bodyParser = require("body-parser");
@@ -10,7 +9,6 @@ const expense = require('./schemas/expense');
 const category = require('./schemas/category');
 const budget = require('./schemas/budget');
 app.use(cors());
-
 
 const port = config.port;
 app.use(bodyParser.urlencoded({ extended: false }));
